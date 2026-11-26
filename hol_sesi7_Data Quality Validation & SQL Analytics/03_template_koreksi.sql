@@ -1,0 +1,8 @@
+-- Simpan hasil 01 dan 02 serta log temuan SEBELUM koreksi.
+-- TODO: tulis preview SELECT untuk contribution event2 dan claim event2,
+-- bandingkan dengan eligible source serta reference. Jangan menebak nilai.
+-- TODO: usulkan UPDATE amount kontribusi dan payment_date_key klaim
+-- dalam BEGIN/COMMIT, scope source_system LAB7 dan event_id=2.
+-- SQL ini sengaja komentar saja. Gunakan solusi fasilitator setelah temuan dibahas
+-- jika waktu koreksi habis. Tidak ada kewajiban memperbaiki source raw pada sesi ini.
+-- Setelah koreksi: jalankan lagi 01 dan 02. DQ source dapat tetap terbuka.
