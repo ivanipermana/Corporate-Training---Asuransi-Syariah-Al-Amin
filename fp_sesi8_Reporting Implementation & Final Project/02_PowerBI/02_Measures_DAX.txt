@@ -1,0 +1,23 @@
+Buat sebagai MEASURES terpisah di Power BI, bukan calculated columns.
+Total Kontribusi Lunas = COALESCE(SUM(RptContribution[total_amount]), 0)
+
+Total Klaim Dibayar = COALESCE(SUM(RptClaims[total_amount]), 0)
+
+Rasio Klaim Dibayar terhadap Kontribusi =
+    DIVIDE([Total Klaim Dibayar], [Total Kontribusi Lunas])
+
+Jumlah Transaksi Kontribusi = COALESCE(SUM(RptContribution[event_count]), 0)
+
+Jumlah Klaim Dibayar = COALESCE(SUM(RptClaims[event_count]), 0)
+
+FORMAT
+Kontribusi/klaim: rupiah dengan angka penuh pada validasi. Pada kartu boleh K/M,
+tetapi simpan nilai underlying penuh untuk perbandingan.
+Rasio: Percentage, misalnya2 decimal; JANGAN kalikan100 lagi.
+Count: Whole number. COUNTROWS(RptContribution) menghitung product-month,
+bukan jumlah transaksi; gunakan SUM(event_count).
+Penyebut0 atau kosong -> BLANK pada rasio; jangan klaim0%.
+Rasio adalah perbandingan arus klaim dibayar terhadap kontribusi lunas pada filter sama,
+bukan loss ratio aktuaria atau ukuran profitabilitas. Nilai dapat melebihi100%.
+Untuk agregat multi-produk/bulan, bagi total klaim dengan total kontribusi;
+jangan SUM atau AVERAGE rasio tiap baris.

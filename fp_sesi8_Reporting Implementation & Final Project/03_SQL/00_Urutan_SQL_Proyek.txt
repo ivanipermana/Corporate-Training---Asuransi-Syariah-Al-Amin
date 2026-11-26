@@ -1,0 +1,14 @@
+TIM MENGISI RUNBOOK, BUKAN MENJALANKAN SEMUA FILE SESI SECARA BERURUTAN.
+Baseline final: [nama database / schema / batch / tahap awal atau sesudah delta]
+Mode source integration aktual: [DBeaver / CSV / simulasi] dan bukti: [lokasi]
+Urutan file pilihan tim:
+1. [DDL namespace warehouse baru]
+2. [Extract/landing source]
+3. [Cleansing dan dimensi]
+4. [Fact load + incremental/rerun]
+5. [DQ + rekonsiliasi source-to-target]
+6. [Analytical views + uji per produk-bulan]
+7. [SATU adapter reporting A / B / adapter sendiri dengan kontrak yang sama]
+8. [Power BI import + refresh + validasi SQL vs report]
+Daftar dependensi/izin/versi: [isi]. Cara mengulang: [isi].
+Jangan menulis password. Jangan mengklaim otomatis bila masih replay VALUES.

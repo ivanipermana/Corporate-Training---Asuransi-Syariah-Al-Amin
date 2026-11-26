@@ -1,0 +1,37 @@
+TEMPLATE FINAL PROJECT PESERTA — SESI8
+Empat keluaran: dashboard Power BI, warehouse terintegrasi, catatan validasi,
+dan presentasi akhir. Gunakan fondasi Sesi1-7 yang telah diuji sebelum workshop60menit.
+
+01_Dokumen: buku kerja proyek, validasi landscape, dan storyboard6slide/4menit.
+02_PowerBI: starter Power Query, DAX, tema JSON, layout drawio/SVG.
+03_SQL: runbook yang diisi tim; pilih SATU adapter A(Sesi7) atau B(Sesi6),
+atau buat adapter sendiri dengan kontrak sama. Uji SQL vs Power BI dan grain view.
+04_Diagram: slot diagram architecture, model dan dua star schema untuk dilengkapi.
+05_Pengumpulan: struktur folder dan manifest final; isi dengan hasil aktual.
+
+LANGKAH
+1. Pilih baseline, database, schema dan snapshot. Jangan campur kontrol Sesi6/Sesi7.
+2. Lengkapi dokumen proyek dan artefak pendukung; buktikan pipeline source-ke-mart.
+3. Pilih adapter dan ubah pServer/pDatabase. Import queries ke Power BI Desktop.
+4. Buat4 relationship Single 1:* dari DimMonth/DimProduct ke dua reporting tables.
+5. Buat measures dan dashboard minimal3kartu,2grafik,slicer tahun/bulan dan produk.
+6. Refresh, samakan filter, bandingkan minimal3KPI dan satu kasus slice dengan SQL.
+7. Isi log exception dan storyboard, simpan PBIX serta deck aktual, kumpulkan paket.
+
+CATATAN PENGGUNAAN
+Paket ini menyediakan dokumen, kode starter dan layout editable. Peserta membuat
+PBIX dan deck presentasi aktual dari hasil masing-masing; tidak ada file PBIX/PBIT di paket.
+Model starter menggunakan analytical views bulanan; jumlah event SUM(event_count),
+bukan COUNTROWS. Rasio SUM klaim / SUM kontribusi; penyebut0 -> BLANK.
+Diagram masih placeholder; ganti dengan model aktual dan tambah relasi/aliran.
+Angka contoh pada screenshot brief bukan angka acuan untuk baseline peserta.
+Sesi7 adapter memerlukan koreksi mart dan view yang sudah lulus; view reporting
+sendiri bukan bukti end-to-end source integration. Sesi6 mempunyai kontrol awal/delta berbeda.
+
+REFERENSI TEKNIS
+https://learn.microsoft.com/en-us/power-bi/guidance/star-schema
+https://learn.microsoft.com/en-us/power-query/connectors/postgresql
+https://learn.microsoft.com/en-us/dax/divide-function-dax
+
+SQL adapter dan kontrol diuji sebagai SQLite ekuivalen pada fixture Sesi6/Sesi7.
+Power Query, DAX, tema dan interaksi Power BI belum diuji di Power BI Desktop.

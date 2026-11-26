@@ -1,0 +1,11 @@
+KELOMPOK [NAMA] FINAL PROJECT
+1. Dashboard: [nama PBIX dan screenshot cadangan]
+2. Warehouse: [folder SQL urutan eksekusi, diagram dan konfigurasi tanpa password]
+3. Validasi: [dokumen validasi terisi, hasil SQL dan screenshot filter]
+4. Presentasi: [deck aktual]
+Artefak Sesi1-7: [lokasi setiap artefak, versi, dan perubahan]
+Baseline final: [database/schema/batch/status sebelum atau sesudah delta]
+Sumber data dan mode landing aktual: [isi]
+Cara membuka dan menjalankan: [isi]
+Exception dan pemilik: [isi]
+Daftar anggota dan kontribusi: [isi]

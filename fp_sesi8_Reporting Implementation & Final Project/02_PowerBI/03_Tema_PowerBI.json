@@ -1,0 +1,14 @@
+{
+  "name": "Asuransi Training Final Project",
+  "dataColors": [
+    "#204A87",
+    "#EB7850",
+    "#1B9F9C",
+    "#6F82B0",
+    "#87986A",
+    "#BB8A22"
+  ],
+  "background": "#FFFFFF",
+  "foreground": "#17324D",
+  "tableAccent": "#204A87"
+}

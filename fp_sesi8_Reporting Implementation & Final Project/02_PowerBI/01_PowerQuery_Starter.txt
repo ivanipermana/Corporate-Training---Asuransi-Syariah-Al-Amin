@@ -1,0 +1,72 @@
+POWER QUERY STARTER
+Di Power Query, buat tiap parameter/query di bawah sebagai Blank Query terpisah.
+Nama query harus tepat. Isi pServer/pDatabase, autentikasi lewat dialog konektor.
+Pilih mode Import untuk workshop. Tidak ada password dalam paket.
+
+QUERY pServer
+"localhost:5432"
+
+QUERY pDatabase
+"nama_database_lab"
+
+QUERY pSchema
+"fp_reporting"
+
+QUERY RptContribution
+let
+    Source = PostgreSQL.Database(pServer, pDatabase),
+    Data = Source{[Schema=pSchema, Item="vw_contribution_kpi"]}[Data],
+    Typed = Table.TransformColumnTypes(Data, {{"month_key", type text},
+        {"product_code", type text}, {"product_name", type text},
+        {"event_count", Int64.Type}, {"total_amount", Currency.Type}})
+in Typed
+
+QUERY RptClaims
+let
+    Source = PostgreSQL.Database(pServer, pDatabase),
+    Data = Source{[Schema=pSchema, Item="vw_claims_kpi"]}[Data],
+    Typed = Table.TransformColumnTypes(Data, {{"month_key", type text},
+        {"product_code", type text}, {"product_name", type text},
+        {"event_count", Int64.Type}, {"total_amount", Currency.Type}})
+in Typed
+
+QUERY DimMonth
+let
+    Keys = Table.Distinct(Table.SelectColumns(Table.Combine({RptContribution, RptClaims}), {"month_key"})),
+    Observed = List.Transform(Keys[month_key], each Date.FromText(_ & "-01",
+        [Format="yyyy-MM-dd", Culture="en-US"])),
+    First = if List.IsEmpty(Observed) then error "Reporting views kosong; pilih baseline valid"
+        else Date.StartOfYear(List.Min(Observed)),
+    Last = Date.AddMonths(Date.StartOfYear(List.Max(Observed)), 11),
+    Months = List.Generate(() => First, each _ <= Last, each Date.AddMonths(_, 1)),
+    Base = Table.FromList(Months, Splitter.SplitByNothing(), {"MonthStart"}),
+    Typed = Table.TransformColumnTypes(Base, {{"MonthStart", type date}}),
+    Start = Table.AddColumn(Typed, "month_key", each Date.ToText([MonthStart],
+        [Format="yyyy-MM", Culture="en-US"]), type text),
+    Year = Table.AddColumn(Start, "Year", each Date.Year([MonthStart]), Int64.Type),
+    MonthNo = Table.AddColumn(Year, "MonthNo", each Date.Month([MonthStart]), Int64.Type),
+    Label = Table.AddColumn(MonthNo, "MonthLabel", each Date.ToText([MonthStart],
+        [Format="MMM yyyy", Culture="id-ID"]), type text)
+in Label
+
+QUERY DimProduct
+let
+    Pairs = Table.Distinct(Table.SelectColumns(Table.Combine({RptContribution, RptClaims}),
+        {"product_code", "product_name"})),
+    Check = Table.Group(Pairs, {"product_code"}, {{"n", each Table.RowCount(_), Int64.Type}}),
+    Result = if Table.RowCount(Table.SelectRows(Check, each [n] <> 1)) > 0
+        then error "Satu product_code mempunyai lebih dari satu nama; perbaiki mapping"
+        else Pairs
+in Result
+
+RELATIONSHIPS MANUAL DI MODEL VIEW
+DimMonth[month_key] 1 -> * RptContribution[month_key]
+DimMonth[month_key] 1 -> * RptClaims[month_key]
+DimProduct[product_code] 1 -> * RptContribution[product_code]
+DimProduct[product_code] 1 -> * RptClaims[product_code]
+Semua aktif, Single dari dimensi ke reporting tables. Jangan join dua reporting tables.
+Jika UI menawarkan 1:1 karena sampel kebetulan unik, pilih desain 1:* sesuai grain.
+MonthLabel diurutkan dengan MonthStart. Slicer memakai kolom DimMonth/DimProduct.
+DimMonth mencakup Januari-Desember untuk tahun baseline, sehingga bulan tanpa
+transaksi tetap dapat dipilih untuk menguji denominator0 dan periode kosong.
+Ini model reporting pada grain bulanan; tidak mendukung drill-down transaksi harian.
